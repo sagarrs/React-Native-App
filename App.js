@@ -1,46 +1,38 @@
 import React from 'react';
-import { View, Text} from 'react-native';
-import {DrawerNavigator} from 'react-navigation';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { View, Text, Button} from 'react-native';
+import {StackNavigator} from 'react-navigation';
 
-const HomeScreen = () => (
+
+const MyProfileScreen = () => (
   <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-    <Text>Home Screen</Text>
-  </View>
-);
-const DrawerScreen = () => (
-  <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-    <Text>Drawer Screen</Text>
+    <Text>MyProfileScreen</Text>
   </View>
 );
 
-const RootDrawer = DrawerNavigator ({
+
+class MyHomeScreen extends React.Component {
+  static navigationOptions = {
+    title: 'Home',
+  }
+
+  render() {
+    return (
+      <Button
+        onPress={() => this.props.navigation.navigate('Profile', {name: 'Lucy'})}
+        title="Go to Lucy's profile"
+      />
+    );
+  }
+}
+
+const ModalStack = StackNavigator({
   Home: {
-    screen: HomeScreen,
-    navigationOptions: {
-      drawerLabel: 'Home',
-      drawerIcon: ({ tintColor, focused }) => (
-        <Ionicons
-          name={focused ? 'ios-home' : 'ios-home-outline'}
-          size={20}
-          style={{ color: tintColor }}
-        />
-      ),
-    },
+    screen: MyHomeScreen,
   },
-  Drawer: {
-    screen: DrawerScreen,
-    navigationOptions: {
-      drawerLabel: 'Profile',
-      drawerIcon: ({ tintColor, focused }) => (
-        <Ionicons
-          name={focused ? 'ios-person' : 'ios-person-outline'}
-          size={20}
-          style={{ color: tintColor }}
-        />
-      ),
-    },
+  Profile: {
+    path: 'people/:name',
+    screen: MyProfileScreen,
   },
 });
 
-export default RootDrawer;
+export default ModalStack;
